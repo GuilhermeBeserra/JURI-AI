@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block 'head' %}
+    <style>
+    #modal-novo-cliente {
+        display: none;
+    }
+    #modal-novo-cliente.show {
+        display: flex !important;
+    }
+    </style>
+{% endblock 'head' %}
+{% block 'body' %}
+    <div class="max-w-7xl mx-auto p-10 space-y-10">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-semibold tracking-tight">Clientes</h1>
+                <p class="text-slate-500 mt-1">Visão geral da sua base de clientes</p>
+            </div>
+            <div class="flex gap-3">
+                <a href="#"
+                   class="bg-slate-100 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-200 transition-colors">
+                    Configurações da Empresa
+                </a>
+                <button onclick="abrirModal()"
+                        class="bg-black text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity">
+                    Novo cliente
+                </button>
+            </div>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="rounded-xl p-4 {% if message.tags == 'success' %}bg-emerald-50 text-emerald-800 border border-emerald-200{% elif message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200{% else %}bg-slate-50 text-slate-800 border border-slate-200{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <p class="text-xs text-slate-400">TOTAL</p>
+                <h2 class="text-3xl font-semibold mt-2">124</h2>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <p class="text-xs text-slate-
+                    </tbody>
+                </table>400">ATIVOS</p>
+                <h2 class="text-3xl font-semibold mt-2">87</h2>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <p class="text-xs text-slate-400">VIP</p>
+                <h2 class="text-3xl font-semibold mt-2">12</h2>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <p class="text-xs text-slate-400">INATIVOS</p>
+                <h2 class="text-3xl font-semibold mt-2">25</h2>
+            </div>
+        </div>
+        <div class="bg-white rounded-3xl shadow-sm">
+            <div class="flex flex-col md:flex-row gap-4 justify-between p-6 border-b border-slate-200">
+                <input class="border border-slate-200 rounded-xl px-4 py-2.5 text-sm w-full md:w-80 focus:ring-4 focus:ring-slate-100 outline-none"
+                       placeholder="Buscar cliente..." />
+                <div class="flex gap-3">
+                    <select class="border border-slate-200 rounded-xl pl-4 pr-10 py-2.5 text-sm">
+                        <option>Ativo</option>
+                        <option>Inativo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="p-6">
+                <table class="w-full text-sm border-separate border-spacing-y-3">
+                    <thead class="text-slate-400">
+                        <tr>
+                            <th class="text-left">Cliente</th>
+                            <th>Contato</th>
+                            <th>Tipo</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cliente in clientes %}      
+                            <tr class="bg-[#f9fafc] rounded-xl">
+                                <td class="p-4 font-medium"><a href="{% url 'cliente' cliente.id %}">{{ cliente.nome }}</a></td>
+                                <td class="text-center">{{ cliente.email }}</td>
+                                <td class="text-center">{{ cliente.get_tipo_display }}</td>
+                                <td class="text-center">
+                                    <span class="{% if cliente.get_status_display %} bg-emerald-100 text-emerald-70 {% else %} bg-red-100 text-red-70 {% endif %}0 px-3 py-1 rounded-full text-xs">{% if cliente.get_status_display %} Ativo {% else %} Inativo {% endif %}</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="modal-novo-cliente"
+         class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+         style="display: none">
+        <div onclick="fecharModal()"
+             class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+        <div class="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto z-10">
+            <div class="px-6 pt-6 pb-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-2xl font-semibold text-gray-900">Novo Cliente</h3>
+                    <button onclick="fecharModal()"
+                            class="text-gray-400 hover:text-gray-500 transition-colors">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form action="{% url 'clientes' %}" method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                        <input type="text"
+                               name="nome"
+                               id="nome"
+                               required
+                               class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-slate-900/20 focus:border-slate-300 outline-none">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email"
+                               name="email"
+                               id="email"
+                               required
+                               class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-slate-900/20 focus:border-slate-300 outline-none">
+                    </div>
+                    <div>
+                        <label for="tipo" class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+                        <select name="tipo"
+                                id="tipo"
+                                required
+                                class="w-full border border-slate-200 rounded-xl pl-4 pr-10 py-2.5 text-sm focus:ring-2 focus:ring-slate-900/20 focus:border-slate-300 outline-none">
+                            <option value="PF">Pessoa Física</option>
+                            <option value="PJ">Pessoa Jurídica</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox"
+                               name="status"
+                               id="status"
+                               checked
+                               class="h-4 w-4 text-slate-900 focus:ring-slate-900 border-slate-300 rounded">
+                        <label for="status" class="ml-2 block text-sm text-gray-700">Cliente ativo</label>
+                    </div>
+                    <div class="flex gap-3 pt-4">
+                        <button type="button"
+                                onclick="fecharModal()"
+                                class="flex-1 border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-50 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit"
+                                class="flex-1 bg-black text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity">
+                            Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function abrirModal() {
+            document.getElementById('modal-novo-cliente').style.display = 'flex';
+        }
+        
+        function fecharModal() {
+            document.getElementById('modal-novo-cliente').style.display = 'none';
+        }
+        
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                fecharModal();
+            }
+        });
+    </script>
+{% endblock 'body' %}

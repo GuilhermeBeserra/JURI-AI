@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'body' %}
+   
+  <main>
+    <header class="relative isolate pt-4">
+      <div aria-hidden="true" class="absolute inset-0 -z-10 overflow-hidden">
+        <div class="absolute top-full left-16 -mt-16 transform-gpu opacity-50 blur-3xl xl:left-1/2 xl:-ml-80">
+          <div style="clip-path: polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)" class="aspect-1154/678 w-288.5 bg-linear-to-br from-[#FF80B5] to-[#9089FC]"></div>
+        </div>
+        <div class="absolute inset-x-0 bottom-0 h-px bg-gray-900/5"></div>
+      </div>
+  
+      <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
+          <div class="flex items-center gap-x-6">
+            <img src="{% static 'user.png' %}" alt="" class="size-16 flex-none rounded-full bg-gray-100 outline -outline-offset-1 outline-black/5" />
+            <h1>
+              <div class="text-sm/6 text-gray-500">{{ cliente.email }}</div>
+              <div class="mt-1 text-base font-semibold text-gray-900">{{ cliente.nome }}</div>
+            </h1>
+          </div>
+          <div class="flex items-center gap-x-4 sm:gap-x-6">
+            <a href="#" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Chat</a>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <!-- Documentos -->
+        <div class="lg:col-start-3 lg:row-end-1">
+          <div class="rounded-lg bg-gray-50 shadow-xs outline-1 outline-gray-900/5">
+            <div class="px-6 pt-6">
+              <h3 class="text-sm/6 font-semibold text-gray-900 mb-4">Documentos Cadastrados</h3>
+            </div>
+            
+          </div>
+        </div>
+  
+        <!-- Main content -->
+        <div class="-mx-4 px-4 py-8 shadow-xs ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pt-16 xl:pb-20">
+          <h2 class="text-base font-semibold text-gray-900 mb-6">Adicionar Documento</h2>
+          
+          <form class="space-y-6" action="{% url 'cliente' cliente.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <div>
+              <label for="documento" class="block text-sm/6 font-medium text-gray-900 mb-2">Documento</label>
+              <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                <div class="text-center">
+                  <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.06Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
+                  </svg>
+                  <div class="mt-4 flex text-sm/6 leading-6 text-gray-600">
+                    <label for="documento" class="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-600">
+                      <span>Enviar um arquivo</span>
+                      <input id="documento" name="documento" type="file" class="sr-only" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+                    </label>
+                    <p class="pl-1">ou arraste e solte</p>
+                  </div>
+                  <p class="text-xs leading-5 text-gray-600">PDF, DOC, DOCX, JPG, PNG até 10MB</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label for="data" class="block text-sm/6 font-medium text-gray-900 mb-2">Data</label>
+              <input type="date" id="data" name="data" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+            </div>
+
+            <div>
+              <label for="tipo" class="block text-sm/6 font-medium text-gray-900 mb-2">Tipo</label>
+              <select id="tipo" name="tipo" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                <option value="">Selecione um tipo</option>
+                <option value="C">Contrato</option>
+                <option value="P">Petição</option>
+                <option value="CONT">Contestação</option>
+                <option value="R">Recursos</option>
+                <option value="O">Outro</option>
+              </select>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4">
+              <button type="button" class="rounded-md bg-white px-3 py-2 text-sm/6 font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50">
+                Cancelar
+              </button>
+              <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+  
+        
+      </div>
+    </div>
+  </main>
+  
+{% endblock 'body' %}
