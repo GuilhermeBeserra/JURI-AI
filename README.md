@@ -163,5 +163,8 @@ As informações geradas pelo sistema e pela IA servem apenas como apoio à aná
 
 ## 📝 Licença
 
-Este projeto está licenciado sob a MIT License.
-Sinta-se à vontade para estudar, modificar e evoluir o código.
+Este projeto está licenciado sob a **Apache License 2.0**.  
+Versões anteriores do projeto utilizaram a **MIT License**.
+
+**Sinta-se à vontade para estudar, modificar e evoluir o código.**
+
